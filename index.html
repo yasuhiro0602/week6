@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BMI計算ツール</title>
+  <!-- Tailwind CSSの読み込み -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+  <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-sm">
+    <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">BMI計算ツール</h2>
+
+    <!-- 入力フォーム -->
+    <div class="mb-4">
+      <label class="block text-gray-700 mb-2">身長 (cm)</label>
+      <input type="number" id="height" class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:border-blue-500" placeholder="例: 170">
+    </div>
+
+    <div class="mb-6">
+      <label class="block text-gray-700 mb-2">体重 (kg)</label>
+      <input type="number" id="weight" class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:border-blue-500" placeholder="例: 65">
+    </div>
+
+    <!-- 計算ボタン -->
+    <button onclick="calculateBMI()" class="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600 transition duration-200">
+      計算する
+    </button>
+
+    <!-- 結果表示エリア -->
+    <div id="result" class="mt-6 text-center text-lg font-bold text-gray-800"></div>
+  </div>
+
+  <!-- JavaScriptの処理 -->
+  <script>
+    function calculateBMI() {
+      // 1. 入力された値を取得する
+      const heightInput = document.getElementById("height").value;
+      const weightInput = document.getElementById("weight").value;
+      const resultArea = document.getElementById("result");
+
+      // 2. 未入力や0以下の数値に対するエラーチェック
+      if (!heightInput || !weightInput || heightInput <= 0 || weightInput <= 0) {
+        resultArea.innerHTML = "<span class='text-red-500'>正しい身長と体重を入力してください。</span>";
+        return; // エラーの場合はここで処理を終了
+      }
+
+      // 3. BMIの計算（身長をcmからmに変換）
+      const heightM = heightInput / 100;
+      const bmi = weightInput / (heightM * heightM);
+      
+      // 小数点第1位に丸める
+      const formattedBmi = bmi.toFixed(1);
+
+      // 4. if/elseを使った条件分岐（判定）
+      let status = "";
+      let statusColor = "";
+
+      if (bmi < 18.5) {
+        status = "痩せ型";
+        statusColor = "text-blue-500";
+      } else if (bmi < 25) {
+        status = "普通体重";
+        statusColor = "text-green-500";
+      } else {
+        status = "肥満";
+        statusColor = "text-red-500";
+      }
+
+      // 5. 結果を画面に表示する
+      resultArea.innerHTML = `あなたのBMI: ${formattedBmi} <br> 判定: <span class="${statusColor}">${status}</span>`;
+    }
+  </script>
+
+</body>
+</html>
